@@ -1,0 +1,15 @@
+{
+  "name": "f1guide",
+  "version": "1.0.0",
+  "description": "A guide into the world of Formula 1.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pranav Desai",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  }
+}
