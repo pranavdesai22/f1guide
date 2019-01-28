@@ -58,10 +58,10 @@ function verifyRequestSignature(req, res, buf) {
     var signature = req.headers["x-hub-signature"];
 
     if (!signature) {
-        // For testing, let's log an error. In production, you should throw an
-        // error.
+        // For testing, let's log an error. In production, you should throw an error.
         console.error("Couldn't validate the signature.");
-    } else {
+    }
+    else {
         var elements = signature.split('=');
         var method = elements[0];
         var signatureHash = elements[1];
@@ -106,7 +106,8 @@ app.get('/webhook', (req, res) => {
             console.log('WEBHOOK_VERIFIED');
             res.status(200).send(challenge);
 
-        } else {
+        }
+        else {
             // Responds with '403 Forbidden' if verify tokens do not match
             res.sendStatus(403);
         }
@@ -117,6 +118,7 @@ app.get('/webhook', (req, res) => {
 app.post('/webhook', (req, res) => {
     var body = req.body;
     //console.log(body);
+
     //Check if this is a page subscription
     if (body.object === 'page') {
 
@@ -142,7 +144,8 @@ app.post('/webhook', (req, res) => {
 
         //Assuming everything went well
         res.sendStatus(200);
-    } else {
+    }
+    else {
         // Return a '404 Not Found' if event is not from a page subscription
         res.sendStatus(404);
     }
@@ -160,8 +163,7 @@ function buttonGetStarted() {
 
     // Start the request
     request({
-            url: 'https://graph.facebook.com/v2.12/me/messenger_profile?access_token=' + PAGE_ACCESS_TOKEN,
-            //qs: { access_token: PAGE_ACCESS_TOKEN },
+            url: 'https://graph.facebook.com/v3.2/me/messenger_profile?access_token=' + PAGE_ACCESS_TOKEN,
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -174,8 +176,9 @@ function buttonGetStarted() {
                 //Call the Persistent Menu
                 //setPersistentMenu();
                 console.log("Call for setting up persistent menu.");
-            } else {
-                // TODO: Handle errors
+            }
+            else {
+                //TODO: Handle errors
                 console.log("Error setting Get Started button: " + error);
                 console.log("This is the Error: " + body);
             }
