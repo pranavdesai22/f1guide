@@ -10,6 +10,7 @@ const
     express = require('express'),
     bodyParser = require('body-parser'),
     crypto = require('crypto'),
+    request = require('request'),
     https = require('https');
 
 //Set server port and send message on success
@@ -128,9 +129,11 @@ app.post('/webhook', (req, res) => {
             if (pageEntry.messaging) {
                 pageEntry.messaging.forEach(function (allMessages) {
                     if (allMessages.message) {
-                        eventTextMessage(allMessages);
+                        console.log(allMessages);
+                        //eventTextMessage(allMessages);
                     } else if (allMessages.postback) {
-                        eventPostbackMessage(allMessages);
+                        console.log(allMessages);
+                        //eventPostbackMessage(allMessages);
                     }
                     //console.log(allMessages);
                 });
@@ -169,11 +172,43 @@ function buttonGetStarted() {
             if (!error && response.statusCode == 200) {
                 console.log("Success! Get Started button setup is complete.");
                 //Call the Persistent Menu
-                setPersistentMenu();
+                //setPersistentMenu();
+                console.log("Call for setting up persistent menu.");
             } else {
                 // TODO: Handle errors
                 console.log("Error setting Get Started button: " + error);
                 console.log("This is the Error: " + body);
+            }
+        });
+}
+
+function setPersistentMenu() {
+    //console.log(locale);
+    var persistentMenu = {
+        "persistent_menu": [{
+            "locale": "default",
+            "composer_input_disabled": false,
+            "call_to_actions": buttons.persistent
+        }]
+    }
+    //console.log(buttons.persistent[locale]);
+    // Start the request
+    request({
+            url: 'https://graph.facebook.com/v2.12/me/messenger_profile?access_token=' + PAGE_ACCESS_TOKEN,
+            //qs: { access_token: PAGE_ACCESS_TOKEN },
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            form: persistentMenu
+        },
+        function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log("Success! Persistent Menu setup is complete.");
+            } else {
+                // TODO: Handle errors
+                console.log("Error setting up Persistent Menu: " + error);
+                console.log("Persistent Error: " + body);
             }
         });
 }
